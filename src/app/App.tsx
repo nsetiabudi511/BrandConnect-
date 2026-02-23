@@ -243,21 +243,21 @@ export default function App() {
       
       <main className="ml-64 pt-16">
         <div className="p-8 max-w-[1600px] mx-auto">
-          {/* Top Section - Brand Readiness Score + Recommended Actions */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div className="lg:col-span-2">
-              <BrandReadinessScore 
-                score={brandReadinessScore}
-                change={scoreChange}
-                lastUpdated="Feb 23, 2026"
-              />
-            </div>
-            <div className="lg:col-span-1">
-              <ImprovementPanel 
-                actions={actionsWithIcons}
-                weakestCategory="Audience Demographics"
-              />
-            </div>
+          {/* Top Section - Brand Readiness Score */}
+          <div className="mb-6">
+            <BrandReadinessScore 
+              score={brandReadinessScore}
+              change={scoreChange}
+              lastUpdated="Feb 23, 2026"
+            />
+          </div>
+
+          {/* Recommended Actions */}
+          <div className="mb-8">
+            <ImprovementPanel 
+              actions={actionsWithIcons}
+              weakestCategory="Audience Demographics"
+            />
           </div>
 
           {/* Main Grid */}
