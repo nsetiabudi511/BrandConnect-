@@ -88,7 +88,7 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
               </>
             ) : (
               <>
-                Keep building your foundation. Complete the recommended actions below to improve 
+                Keep building your foundation. Complete the recommended actions to improve 
                 your brand readiness and grow your monetization potential.
               </>
             )}
