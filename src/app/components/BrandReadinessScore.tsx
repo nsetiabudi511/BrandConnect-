@@ -19,8 +19,15 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
     return "Building";
   };
 
+  const getTierLabel = (score: number) => {
+    if (score >= 75) return "🥇 Premium Partner";
+    if (score >= 40) return "🥈 Brand-Ready Creator";
+    return "🥉 Emerging Creator";
+  };
+
   const r = 52;
   const circumference = 2 * Math.PI * r;
+  const tierLabel = getTierLabel(score);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-5">
@@ -70,6 +77,11 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
         </div>
 
         <div className="flex-1 min-w-0">
+          <div className="mb-2">
+            <span className="block text-sm font-semibold text-gray-900 sm:text-base">
+              {tierLabel}
+            </span>
+          </div>
           <div className={`inline-block px-3 py-1 rounded-full mb-2 text-sm ${
             score >= 80 ? "bg-green-100 text-green-800" : 
             score >= 60 ? "bg-yellow-100 text-yellow-800" : 
@@ -85,8 +97,8 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
               </>
             ) : score >= 60 ? (
               <>
-                You're making great progress! Focus on the improvement areas below to become 
-                brand-ready and unlock partnership opportunities.
+                You're making great progress! Focus on the improvement areas below to increase 
+                your monetization readiness and unlock partnership opportunities.
               </>
             ) : (
               <>
