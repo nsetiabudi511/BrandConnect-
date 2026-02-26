@@ -261,14 +261,12 @@ export default function App() {
           </div>
 
           {/* Main Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            {/* Category Breakdown - Takes 2 columns */}
-            <div className="lg:col-span-2">
-              <CategoryBreakdown categories={categoriesWithIcons} />
-            </div>
+          <div className="mb-8">
+            {/* Category Breakdown */}
+            <CategoryBreakdown categories={categoriesWithIcons} />
 
-            {/* Monthly Progress */}
-            <div className="lg:col-span-1">
+            {/* Progress Over Time */}
+            <div className="mt-6">
               <MonthlyProgress 
                 monthlyData={monthlyData}
                 milestones={milestones}
