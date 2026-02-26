@@ -276,37 +276,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* Info Banner */}
-          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                  <Target className="w-5 h-5 text-white" />
-                </div>
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-blue-900 mb-2">
-                  Ready to unlock BrandConnect?
-                </h4>
-                <p className="text-sm text-blue-800 mb-4">
-                  You're only 12 points away from reaching the 80% threshold to start connecting 
-                  with brands. Focus on completing your media kit and improving audience demographics 
-                  data to become brand-ready within the next 2 weeks.
-                </p>
-                <div className="flex items-center gap-3">
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                    View Full Guidelines
-                  </button>
-                  <button className="text-blue-700 text-sm font-medium hover:underline">
-                    Learn about BrandConnect
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Partnership Picks */}
-          <div className="mt-8">
+          <div className="mt-6">
             <div className="flex items-center justify-between mb-3">
               <div>
                 <h3 className="text-lg font-semibold">Partnership Picks</h3>
@@ -340,8 +311,8 @@ export default function App() {
                         }}
                         className="snap-start flex-shrink-0 w-44 bg-white border border-gray-200 rounded-lg p-4 text-left hover:shadow-sm transition-shadow"
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
+                        <div className="flex items-center gap-4">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-base font-semibold text-gray-700">
                             {initials}
                           </div>
                           <div className="flex-1 min-w-0">
