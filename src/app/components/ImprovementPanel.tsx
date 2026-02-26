@@ -1,54 +1,76 @@
-import { Button } from "./ui/button";
-import { 
-  ArrowRight, 
-  Upload, 
-  MessageCircle, 
-  FileText,
-  Target,
-  Lightbulb
-} from "lucide-react";
+import { Lightbulb } from "lucide-react";
 
-interface ImprovementAction {
+type TierKey = "emerging" | "brand_ready" | "premium";
+
+interface TierTask {
   id: string;
-  title: string;
-  description: string;
-  priority: "high" | "medium" | "low";
-  category: string;
-  icon: React.ReactNode;
-  impact: string;
+  label: string;
+  tier: TierKey;
 }
 
 interface ImprovementPanelProps {
-  actions: ImprovementAction[];
-  weakestCategory: string;
+  score: number;
 }
 
-export function ImprovementPanel({ actions, weakestCategory }: ImprovementPanelProps) {
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return "bg-red-50 border-red-200 text-red-800";
-      case "medium":
-        return "bg-yellow-50 border-yellow-200 text-yellow-800";
-      case "low":
-        return "bg-blue-50 border-blue-200 text-blue-800";
-      default:
-        return "bg-gray-50 border-gray-200 text-gray-800";
-    }
-  };
+const TIER_TASKS: TierTask[] = [
+  // Emerging Creator
+  { id: "emerging-1", label: "Add bio + niche", tier: "emerging" },
+  { id: "emerging-2", label: "Connect at least 1 platform", tier: "emerging" },
+  { id: "emerging-3", label: "Start media kit", tier: "emerging" },
+  // Brand-Ready Creator
+  { id: "brand-1", label: "Complete media kit (100%)", tier: "brand_ready" },
+  { id: "brand-2", label: "Input audience demographics", tier: "brand_ready" },
+  { id: "brand-3", label: "Connect analytics data", tier: "brand_ready" },
+  { id: "brand-4", label: "Set pricing ranges", tier: "brand_ready" },
+  { id: "brand-5", label: "Add 1 case study / past collaboration", tier: "brand_ready" },
+  // Premium Partner
+  { id: "premium-1", label: "Upload campaign report (performance recap)", tier: "premium" },
+  { id: "premium-2", label: "Upload contract checklist", tier: "premium" },
+  { id: "premium-3", label: "Verify payout setup", tier: "premium" },
+  { id: "premium-4", label: "Add 3+ case studies", tier: "premium" },
+];
 
-  const getPriorityBadgeColor = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return "bg-red-100 text-red-800";
-      case "medium":
-        return "bg-yellow-100 text-yellow-800";
-      case "low":
-        return "bg-blue-100 text-blue-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+const getTierKey = (score: number): TierKey => {
+  if (score >= 75) return "premium";
+  if (score >= 40) return "brand_ready";
+  return "emerging";
+};
+
+const getTierName = (tier: TierKey): string => {
+  switch (tier) {
+    case "premium":
+      return "Premium Partner";
+    case "brand_ready":
+      return "Brand-Ready Creator";
+    default:
+      return "Emerging Creator";
+  }
+};
+
+const getCompletedCountForTier = (score: number, tier: TierKey, totalTasks: number) => {
+  if (totalTasks === 0) return 0;
+
+  let ratio = 0;
+
+  if (tier === "emerging") {
+    ratio = Math.max(0, Math.min(1, score / 39));
+  } else if (tier === "brand_ready") {
+    ratio = Math.max(0, Math.min(1, (score - 40) / (74 - 40)));
+  } else {
+    ratio = Math.max(0, Math.min(1, (score - 75) / (100 - 75)));
+  }
+
+  return Math.max(0, Math.min(totalTasks, Math.round(ratio * totalTasks)));
+};
+
+export function ImprovementPanel({ score }: ImprovementPanelProps) {
+  const tierKey = getTierKey(score);
+  const tierName = getTierName(tierKey);
+
+  const tasksForTier = TIER_TASKS.filter((task) => task.tier === tierKey);
+  const completedCount = getCompletedCountForTier(score, tierKey, tasksForTier.length);
+  const completedTasks = tasksForTier.slice(0, completedCount);
+  const upNextTasks = tasksForTier.slice(completedCount);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -58,48 +80,42 @@ export function ImprovementPanel({ actions, weakestCategory }: ImprovementPanelP
           <h3 className="text-xl font-semibold">Recommended Actions</h3>
         </div>
         <p className="text-sm text-gray-600">
-          Focus on <span className="font-medium text-orange-600">{weakestCategory}</span> for the biggest impact
+          Based on your current tier:{" "}
+          <span className="font-medium text-orange-600">{tierName}</span>
         </p>
       </div>
 
-      <div className="space-y-4">
-        {actions.map((action) => (
-          <div
-            key={action.id}
-            className={`border rounded-lg p-4 ${getPriorityColor(action.priority)}`}
-          >
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 mt-1">
-                {action.icon}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h4 className="font-medium mb-1">{action.title}</h4>
-                    <p className="text-sm opacity-80 mb-2">{action.description}</p>
-                  </div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${getPriorityBadgeColor(action.priority)}`}>
-                    {action.priority.charAt(0).toUpperCase() + action.priority.slice(1)} Priority
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Target className="w-4 h-4 opacity-60" />
-                    <span className="text-sm opacity-80">{action.impact}</span>
-                  </div>
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    className="gap-1 hover:gap-2 transition-all"
-                  >
-                    Take Action
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h4 className="text-sm font-semibold text-gray-900 mb-2">Completed</h4>
+          {completedTasks.length === 0 ? (
+            <p className="text-sm text-gray-500">You haven’t completed any tier tasks yet.</p>
+          ) : (
+            <ul className="space-y-1">
+              {completedTasks.map((task) => (
+                <li key={task.id} className="flex items-center gap-2 text-sm text-gray-700">
+                  <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span>{task.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div>
+          <h4 className="text-sm font-semibold text-gray-900 mb-2">Up Next</h4>
+          {upNextTasks.length === 0 ? (
+            <p className="text-sm text-gray-500">You’ve completed all tasks for this tier.</p>
+          ) : (
+            <ul className="space-y-1">
+              {upNextTasks.map((task) => (
+                <li key={task.id} className="flex items-center gap-2 text-sm text-gray-700">
+                  <span className="inline-flex h-1.5 w-1.5 rounded-full bg-sky-500" />
+                  <span>{task.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -255,8 +255,7 @@ export default function App() {
           {/* Recommended Actions */}
           <div className="mb-8">
             <ImprovementPanel 
-              actions={actionsWithIcons}
-              weakestCategory="Audience Demographics"
+              score={brandReadinessScore}
             />
           </div>
 
