@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import * as api from "./api/brandConnect";
+import { BRANDS } from "./OpportunitiesPage";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -300,6 +301,61 @@ export default function App() {
                     Learn about BrandConnect
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Partnership Picks */}
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h3 className="text-lg font-semibold">Partnership Picks</h3>
+                <p className="text-sm text-gray-600">
+                  A sneak peek of brands you&apos;re eligible to apply to.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = "/opportunities";
+                }}
+                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                View all opportunities
+              </button>
+            </div>
+            <div className="relative">
+              <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+                {BRANDS.filter((brand) => brand.eligible)
+                  .slice(0, 8)
+                  .map((brand) => {
+                    const initials = brand.emoji || brand.name.slice(0, 2).toUpperCase();
+
+                    return (
+                      <button
+                        key={brand.id}
+                        type="button"
+                        onClick={() => {
+                          window.location.href = `/opportunities?brand=${brand.id}`;
+                        }}
+                        className="snap-start flex-shrink-0 w-44 bg-white border border-gray-200 rounded-lg p-4 text-left hover:shadow-sm transition-shadow"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
+                            {initials}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-gray-900 truncate">
+                              {brand.name}
+                            </div>
+                            <div className="mt-1 inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
+                              Eligible
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
               </div>
             </div>
           </div>

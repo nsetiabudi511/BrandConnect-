@@ -13,19 +13,13 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
     return "text-orange-600";
   };
 
-  const getScoreStatus = (score: number) => {
-    if (score >= 80) return "Brand Ready";
-    if (score >= 60) return "Growing";
-    return "Building";
-  };
-
   const getTierLabel = (score: number) => {
     if (score >= 75) return "🥇 Premium Partner";
     if (score >= 40) return "🥈 Brand-Ready Creator";
     return "🥉 Emerging Creator";
   };
 
-  const r = 52;
+  const r = 60;
   const circumference = 2 * Math.PI * r;
   const tierLabel = getTierLabel(score);
 
@@ -50,18 +44,18 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
 
       <div className="flex items-center gap-6">
         <div className="relative flex-shrink-0">
-          <svg className="w-36 h-36 transform -rotate-90">
+          <svg className="w-40 h-40 transform -rotate-90">
             <circle
-              cx="72"
-              cy="72"
+              cx="80"
+              cy="80"
               r={r}
               stroke="#e5e7eb"
               strokeWidth="8"
               fill="none"
             />
             <circle
-              cx="72"
-              cy="72"
+              cx="80"
+              cy="80"
               r={r}
               stroke={score >= 80 ? "#16a34a" : score >= 60 ? "#ca8a04" : "#ea580c"}
               strokeWidth="8"
@@ -71,23 +65,16 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className={`text-3xl font-bold ${getScoreColor(score)}`}>{score}</div>
+            <div className={`text-4xl sm:text-5xl font-bold ${getScoreColor(score)}`}>{score}</div>
             <div className="text-xs text-gray-500">out of 100</div>
           </div>
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="mb-2">
-            <span className="block text-sm font-semibold text-gray-900 sm:text-base">
+            <span className="block text-base sm:text-lg font-semibold text-gray-900">
               {tierLabel}
             </span>
-          </div>
-          <div className={`inline-block px-3 py-1 rounded-full mb-2 text-sm ${
-            score >= 80 ? "bg-green-100 text-green-800" : 
-            score >= 60 ? "bg-yellow-100 text-yellow-800" : 
-            "bg-orange-100 text-orange-800"
-          }`}>
-            {getScoreStatus(score)}
           </div>
           <p className="text-gray-700 text-sm leading-relaxed">
             {score >= 80 ? (
