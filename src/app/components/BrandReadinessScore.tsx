@@ -8,14 +8,12 @@ interface BrandReadinessScoreProps {
 
 export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadinessScoreProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-600";
-    if (score >= 60) return "text-yellow-600";
+    if (score === 100) return "text-green-600";
     return "text-orange-600";
   };
 
   const getTierLabel = (score: number) => {
-    if (score >= 75) return "🥇 Premium Partner";
-    if (score >= 40) return "🥈 Brand-Ready Creator";
+    if (score === 100) return "🥇 Brand-Ready Creator";
     return "🥉 Emerging Creator";
   };
 
@@ -57,7 +55,7 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
               cx="80"
               cy="80"
               r={r}
-              stroke={score >= 80 ? "#16a34a" : score >= 60 ? "#ca8a04" : "#ea580c"}
+              stroke={score === 100 ? "#16a34a" : "#ea580c"}
               strokeWidth="8"
               fill="none"
               strokeDasharray={`${(score / 100) * circumference} ${circumference}`}
@@ -77,20 +75,13 @@ export function BrandReadinessScore({ score, change, lastUpdated }: BrandReadine
             </span>
           </div>
           <p className="text-gray-700 text-sm leading-relaxed">
-            {score >= 80 ? (
+            {score === 100 ? (
               <>
-                Your channel meets the criteria for brand partnerships! You're ready to start 
-                connecting with brands through BrandConnect.
-              </>
-            ) : score >= 60 ? (
-              <>
-                You're making great progress! Focus on the improvement areas below to increase 
-                your monetization readiness and unlock partnership opportunities.
+                You've unlocked Brand-Ready status. Your profile is fully optimized for partnerships.
               </>
             ) : (
               <>
-                Keep building your foundation. Complete the recommended actions below to improve 
-                your brand readiness and grow your monetization potential.
+                You're building your monetization foundation. Complete all requirements to unlock Brand-Ready status.
               </>
             )}
           </p>

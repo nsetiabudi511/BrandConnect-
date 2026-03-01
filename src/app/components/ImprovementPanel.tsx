@@ -1,6 +1,6 @@
 import { Lightbulb } from "lucide-react";
 
-type TierKey = "emerging" | "brand_ready" | "premium";
+type TierKey = "emerging" | "brand_ready";
 
 interface TierTask {
   id: string;
@@ -13,53 +13,36 @@ interface ImprovementPanelProps {
 }
 
 const TIER_TASKS: TierTask[] = [
-  // Emerging Creator
+  // Emerging Creator (0–99%)
   { id: "emerging-1", label: "Add bio + niche", tier: "emerging" },
   { id: "emerging-2", label: "Connect at least 1 platform", tier: "emerging" },
   { id: "emerging-3", label: "Start media kit", tier: "emerging" },
-  // Brand-Ready Creator
+  // Brand-Ready Creator (100%)
   { id: "brand-1", label: "Complete media kit (100%)", tier: "brand_ready" },
   { id: "brand-2", label: "Input audience demographics", tier: "brand_ready" },
   { id: "brand-3", label: "Connect analytics data", tier: "brand_ready" },
   { id: "brand-4", label: "Set pricing ranges", tier: "brand_ready" },
   { id: "brand-5", label: "Add 1 case study / past collaboration", tier: "brand_ready" },
-  // Premium Partner
-  { id: "premium-1", label: "Upload campaign report (performance recap)", tier: "premium" },
-  { id: "premium-2", label: "Upload contract checklist", tier: "premium" },
-  { id: "premium-3", label: "Verify payout setup", tier: "premium" },
-  { id: "premium-4", label: "Add 3+ case studies", tier: "premium" },
 ];
 
 const getTierKey = (score: number): TierKey => {
-  if (score >= 75) return "premium";
-  if (score >= 40) return "brand_ready";
+  if (score === 100) return "brand_ready";
   return "emerging";
 };
 
 const getTierName = (tier: TierKey): string => {
-  switch (tier) {
-    case "premium":
-      return "Premium Partner";
-    case "brand_ready":
-      return "Brand-Ready Creator";
-    default:
-      return "Emerging Creator";
-  }
+  if (tier === "brand_ready") return "Brand-Ready Creator";
+  return "Emerging Creator";
 };
 
 const getCompletedCountForTier = (score: number, tier: TierKey, totalTasks: number) => {
   if (totalTasks === 0) return 0;
 
-  let ratio = 0;
-
-  if (tier === "emerging") {
-    ratio = Math.max(0, Math.min(1, score / 39));
-  } else if (tier === "brand_ready") {
-    ratio = Math.max(0, Math.min(1, (score - 40) / (74 - 40)));
-  } else {
-    ratio = Math.max(0, Math.min(1, (score - 75) / (100 - 75)));
+  if (tier === "brand_ready") {
+    return score === 100 ? totalTasks : 0;
   }
-
+  // Emerging: 0–99%
+  const ratio = Math.max(0, Math.min(1, score / 99));
   return Math.max(0, Math.min(totalTasks, Math.round(ratio * totalTasks)));
 };
 
@@ -81,7 +64,9 @@ export function ImprovementPanel({ score }: ImprovementPanelProps) {
         </div>
         <p className="text-sm text-gray-600">
           Based on your current tier:{" "}
-          <span className="font-medium text-orange-600">{tierName}</span>
+          <span className="font-medium text-orange-600">
+            {tierName} {tierKey === "emerging" ? "(0–99%)" : "(100%)"}
+          </span>
         </p>
       </div>
 
